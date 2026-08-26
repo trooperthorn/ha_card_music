@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and attach dist to the release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Verify version lockstep
+        # HACS installs the asset from the release for this tag. If
+        # package.json disagrees with the tag, the shipped console banner
+        # would lie about what is installed, so drift fails the release.
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG="$(node -p "require('./package.json').version")"
+          if [ "$TAG" != "$PKG" ]; then
+            echo "Tag v$TAG does not match package.json version $PKG" >&2
+            exit 1
+          fi
+
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+      - name: Create release with the built card
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            dist/music-flow-card.js \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes

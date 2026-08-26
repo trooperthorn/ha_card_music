@@ -1,0 +1,79 @@
+# Full worked example for the reference topology: Music Assistant streams
+# to a single Chromecast Audio whose optical output is split to a Yamaha
+# RX-A3080 optical input and a Monoprice 6-zone amplifier input, so either
+# or both devices can use the feed.
+#
+# Entity ids below are placeholders. Both integrations derive entity ids
+# from device or zone names that users rename, so replace every entity
+# with the real ids from your install (Settings, Devices and Services).
+#
+# feed_aliases maps the dissimilar source naming: the same optical feed is
+# called "AUDIO2" on the Yamaha and "Source 2" on the Monoprice. Any zone
+# whose source_list contains one of these names resolves automatically; a
+# per-zone feed_source overrides the aliases when a device needs it.
+type: custom:music-flow-card
+title: Whole Home Audio
+
+input:
+  entity: media_player.music_assistant_living
+  name: Music Assistant
+
+channel:
+  entity: media_player.chromecast_audio
+  name: Chromecast Audio
+
+feed_aliases:
+  - AUDIO2
+  - Source 2
+
+zones:
+  # Yamaha RX-A3080 zones (yamaha_ynca or yamaha_ync). The optional
+  # volume.entity readout shows the exact dB from the integration's
+  # "Volume (dB)" number entity next to the percent slider.
+  - entity: media_player.rx_a3080_main
+    name: Great Room
+    volume:
+      display: db
+      entity: number.rx_a3080_main_volume_db
+  - entity: media_player.rx_a3080_zone2
+    name: Office
+    volume:
+      display: db
+      entity: number.rx_a3080_zone2_volume_db
+  - entity: media_player.rx_a3080_zone3
+    name: Patio
+
+  # Monoprice zones (unit 1, zones 11 to 16). display: raw shows the
+  # amplifier's native 0 to 38 steps next to the percent.
+  - entity: media_player.zone_11
+    name: Kitchen
+    volume:
+      display: raw
+      max: 38
+  - entity: media_player.zone_12
+    name: Dining
+    volume:
+      display: raw
+      max: 38
+  - entity: media_player.zone_13
+    name: Garage
+    volume:
+      display: raw
+      max: 38
+
+# Groups are Home Assistant media_player group helpers (Settings, Devices
+# and Services, Helpers, Media player group). The card reads the helper's
+# member list; members that are not configured as zones above are ignored
+# for path state because their feed source is unknown.
+groups:
+  - entity: media_player.downstairs
+    name: Downstairs
+
+# Masters are takeover nodes: one tap enables every zone on the amp unit
+# and sets the source in amplifier firmware (Monoprice master zone 10).
+# Child zone entities confirm on the integration's next poll, up to five
+# seconds later; the card bridges the gap optimistically.
+masters:
+  - entity: media_player.unit_1_master
+    name: Amp All Zones
+    feed_source: Source 2

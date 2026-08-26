@@ -1,0 +1,15 @@
+# Smallest working configuration: one Music Assistant player, one
+# Chromecast, two zones covered by the alias list.
+type: custom:music-flow-card
+input:
+  entity: media_player.music_assistant_living
+channel:
+  entity: media_player.chromecast_audio
+feed_aliases:
+  - AUDIO2
+  - Source 2
+zones:
+  - entity: media_player.receiver_main
+    name: Great Room
+  - entity: media_player.amp_zone_11
+    name: Kitchen
