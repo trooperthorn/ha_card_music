@@ -1,6 +1,6 @@
 # Changelog
 
-## 2026.08.26.1
+## 2026.08.26.2
 
 HACS compliance fixes. Adding the repository to HACS failed with
 "Repository structure is not compliant" because the release for the tag
