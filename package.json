@@ -1,6 +1,6 @@
 {
   "name": "music-flow-card",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Audio Flow style routing card for Home Assistant: pick a Music Assistant source, stream it through a Chromecast, and route it to Yamaha and Monoprice zones with live volume control.",
   "license": "MIT",
   "type": "module",
@@ -12,8 +12,9 @@
     "dev": "vite serve dev --config vite.config.ts",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src dev",
-    "test": "vitest run"
+    "lint": "eslint src dev scripts",
+    "test": "vitest run",
+    "release": "node scripts/release.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

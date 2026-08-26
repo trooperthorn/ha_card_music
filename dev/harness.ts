@@ -124,8 +124,18 @@ function activate(name: string): void {
   for (const btn of toolbar.querySelectorAll("button")) {
     btn.classList.toggle("active", btn.dataset.name === name);
   }
+  const errorBox = document.getElementById("config-error")!;
+  errorBox.textContent = "";
+  errorBox.style.display = "none";
   if (name === "bad-config") {
-    card.setConfig(BAD_CONFIG);
+    // Home Assistant catches the setConfig throw and renders its error
+    // card; the harness mimics that by displaying the message.
+    try {
+      card.setConfig(BAD_CONFIG);
+    } catch (err) {
+      errorBox.textContent = err instanceof Error ? err.message : String(err);
+      errorBox.style.display = "block";
+    }
     return;
   }
   card.setConfig(CONFIG);

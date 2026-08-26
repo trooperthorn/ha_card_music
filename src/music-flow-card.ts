@@ -30,7 +30,6 @@ import type {
   MusicFlowConfig,
 } from "./types";
 import { DEFAULT_OPTIMISTIC_TTL } from "./types";
-import { renderErrors } from "./view/error-card";
 import { renderLegend } from "./view/legend";
 import "./view/browse-panel";
 import "./view/graph-view";
@@ -38,7 +37,6 @@ import "./view/graph-view";
 class MusicFlowCard extends LitElement {
   @property({ attribute: false }) config?: MusicFlowConfig;
 
-  @state() private errors: string[] = [];
   @state() private selection: string | null = null;
   @state() private browsing = false;
   @state() private model?: GraphModel;
@@ -108,21 +106,6 @@ class MusicFlowCard extends LitElement {
         align-items: center;
         gap: 6px;
       }
-      .config-errors {
-        border: 1px solid var(--mfc-error);
-        border-radius: var(--mfc-radius);
-        padding: 12px;
-      }
-      .config-errors-title {
-        font-weight: 600;
-        color: var(--mfc-error);
-        margin-bottom: 6px;
-      }
-      .config-errors ul {
-        margin: 0;
-        padding-left: 18px;
-        font-size: 13px;
-      }
     `,
   ];
 
@@ -130,9 +113,16 @@ class MusicFlowCard extends LitElement {
 
   setConfig(raw: unknown): void {
     const result = parseConfig(raw);
-    this.errors = result.errors;
+    if (!result.config) {
+      // Throwing is the documented contract: Home Assistant renders its
+      // error card with this message. Every collected problem is listed
+      // so the configuration can be fixed in one edit.
+      throw new Error(
+        `music-flow-card configuration problems:\n- ${result.errors.join("\n- ")}`,
+      );
+    }
     this.config = result.config;
-    this.watched = result.config ? watchedEntities(result.config) : [];
+    this.watched = watchedEntities(result.config);
     this.pending.clear();
     this.selection = null;
     this.refresh();
@@ -157,6 +147,12 @@ class MusicFlowCard extends LitElement {
 
   getCardSize(): number {
     return 6;
+  }
+
+  // Sections view sizing (12-column grid). The graph is wide by nature;
+  // rows are left undefined so the card sizes itself vertically.
+  getGridOptions(): Record<string, number> {
+    return { columns: 12, min_columns: 6 };
   }
 
   static getStubConfig(): Record<string, unknown> {
@@ -298,9 +294,6 @@ class MusicFlowCard extends LitElement {
   }
 
   protected override render() {
-    if (this.errors.length > 0) {
-      return html`<div class="card">${renderErrors(this.errors)}</div>`;
-    }
     const model = this.model;
     const config = this.config;
     if (!model || !config || !this._hass) {
