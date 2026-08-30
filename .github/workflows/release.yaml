@@ -3,7 +3,13 @@ name: Release
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+*"
+      - "v[0-9]+.[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to (re)attach the built card to, e.g. v2026.08.26.1"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -13,7 +19,19 @@ jobs:
     name: Build and attach dist to the release
     runs-on: ubuntu-latest
     steps:
+      - name: Resolve tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ steps.tag.outputs.tag }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -21,14 +39,17 @@ jobs:
       - run: npm ci
 
       - name: Verify version lockstep
-        # HACS installs the asset from the release for this tag. If
-        # package.json disagrees with the tag, the shipped console banner
-        # would lie about what is installed, so drift fails the release.
+        # HACS installs the asset from the release for this tag. VERSION is
+        # the single source of truth (CalVer is not valid SemVer, so
+        # package.json cannot carry it); if the tag disagrees with VERSION
+        # in the tagged tree, the shipped banner would lie about what is
+        # installed, so drift fails the release.
         run: |
-          TAG="${GITHUB_REF_NAME#v}"
-          PKG="$(node -p "require('./package.json').version")"
-          if [ "$TAG" != "$PKG" ]; then
-            echo "Tag v$TAG does not match package.json version $PKG" >&2
+          TAG="${{ steps.tag.outputs.tag }}"
+          TAG="${TAG#v}"
+          FILE="$(tr -d '[:space:]' < VERSION)"
+          if [ "$TAG" != "$FILE" ]; then
+            echo "Tag v$TAG does not match VERSION file ($FILE)" >&2
             exit 1
           fi
 
@@ -37,11 +58,21 @@ jobs:
       - run: npm test
       - run: npm run build
 
-      - name: Create release with the built card
+      - name: Attach the built card to the release
+        # Upload into an existing release when one was already created (for
+        # example from the GitHub UI), otherwise create it. This is what
+        # broke the first release attempt: a bare create fails when the
+        # release already exists, leaving the tag without assets and HACS
+        # unable to find the card.
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
-            dist/music-flow-card.js \
-            --title "$GITHUB_REF_NAME" \
-            --generate-notes
+          TAG="${{ steps.tag.outputs.tag }}"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" dist/music-flow-card.js --clobber
+          else
+            gh release create "$TAG" \
+              dist/music-flow-card.js \
+              --title "$TAG" \
+              --generate-notes
+          fi

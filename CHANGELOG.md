@@ -1,8 +1,27 @@
 # Changelog
 
-## Unreleased
+## 2026.08.26.2
 
-Initial implementation.
+HACS compliance fixes. Adding the repository to HACS failed with
+"Repository structure is not compliant" because the release for the tag
+carried no assets (the release workflow's version check refused the
+CalVer tag against a SemVer package.json) and the built file was not in
+the git tree either.
+
+- Versioning is now CalVer `vYYYY.MM.DD.V` with the root `VERSION` file
+  as the single source of truth; `package.json` stays at an inert 0.0.0
+  (npm requires SemVer there). `npm run release -- <version>` keeps
+  VERSION, dist, the tag, and the release in lockstep.
+- `dist/music-flow-card.js` is committed alongside release assets, with
+  a CI job that fails when the committed file drifts from a fresh build.
+- The release workflow uploads into an already existing release instead
+  of failing, verifies the tag against VERSION, and has a manual
+  workflow_dispatch fallback.
+- `setConfig` now throws on invalid configuration per the Home Assistant
+  custom card contract, listing every collected problem in the message.
+- Added `getGridOptions` for sections view sizing.
+
+## Initial implementation
 
 - Four-column signal-path graph (Inputs, Channels, Mixes, Outputs) with
   curved SVG links, click-to-trace selection, dimming, and a color legend.

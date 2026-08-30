@@ -29,11 +29,32 @@ jobs:
           name: music-flow-card
           path: dist/music-flow-card.js
 
+  dist-in-sync:
+    # dist/music-flow-card.js is committed so HACS can install from a git
+    # tree as well as from release assets. A committed dist that no longer
+    # matches the source is worse than none, so drift fails CI.
+    name: Committed dist matches a fresh build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Fail on drift
+        run: |
+          if ! git diff --exit-code -- dist; then
+            echo "dist/music-flow-card.js is stale: run npm run build and commit the result" >&2
+            exit 1
+          fi
+
   hacs:
-    # The dist file ships as a GitHub Release asset, so HACS validation can
-    # only fully pass once the first tagged release exists. Until then this
-    # job is informational: it runs, reports, and does not fail the check.
-    name: HACS validation (informational until first release)
+    # Informational: hacs/action also enforces default-store requirements
+    # (repository description, topics) that go beyond what adding a custom
+    # repository needs, and those are GitHub settings, not repo content.
+    name: HACS validation (informational)
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:

@@ -74,8 +74,11 @@ What you see during the pending window is intent, not confirmed state.
 
 ## Installation
 
-The built card ships as a GitHub Release asset, not as a committed file,
-so installs always match a tagged version.
+The built card is delivered two ways, and HACS accepts either: as an
+asset named `music-flow-card.js` on each GitHub Release, and as a
+committed `dist/music-flow-card.js` in the repository tree. HACS prefers
+the release asset and falls back to the committed dist; CI fails if the
+committed file ever drifts from a fresh build of the source.
 
 **HACS (custom repository):**
 
@@ -90,10 +93,11 @@ resource of type JavaScript module.
 
 ## Configuration
 
-There is no visual editor in this version; configure in YAML. All
-problems are collected and rendered together on the card, and a card with
-configuration errors performs no service calls. A missing entity at
-runtime marks only that node with a badge; the rest of the card keeps
+There is no visual editor in this version; configure in YAML. Invalid
+configuration makes `setConfig` throw, as the Home Assistant custom card
+contract documents, and the error message lists every collected problem
+at once so the configuration can be fixed in one edit. A missing entity
+at runtime marks only that node with a badge; the rest of the card keeps
 working.
 
 | Option | Required | Description |
@@ -146,9 +150,27 @@ canned tree. Scenario buttons cover all-off, playing, cast off, an
 unavailable zone, an unknown source, a partial group, and a broken
 configuration.
 
-Releases: bump `version` in `package.json`, tag `vX.Y.Z`, push the tag.
-The release workflow verifies the tag matches `package.json`, builds, and
-attaches the dist file to the GitHub Release.
+## Versioning and releases
+
+Versions are CalVer `YYYY.MM.DD.V` with a `v` prefix on tags (for
+example `v2026.08.26.1`). The root `VERSION` file is the single source
+of truth: the build stamps it into the console banner, and the release
+workflow refuses a tag that does not match the `VERSION` file in the
+tagged tree. `package.json` stays at an inert `0.0.0` because npm
+requires SemVer there and CalVer is not valid SemVer.
+
+To cut a release:
+
+```
+npm run release -- 2026.08.27.1
+```
+
+The helper validates the format, refuses a dirty tree, writes `VERSION`,
+rebuilds the committed dist, commits, tags `v2026.08.27.1`, and pushes.
+The Release workflow then builds from the tag and attaches
+`dist/music-flow-card.js` to the GitHub Release, uploading into an
+already existing release (for example one created from the GitHub UI)
+instead of failing.
 
 ## Verified and unverified
 
@@ -160,9 +182,16 @@ Verified in the mock harness and unit tests:
   tracing, optimistic confirm and TTL expiry, configuration validation,
   browse and play round trip against the documented WebSocket command.
 
+Verified against the HACS source (`repositories/plugin.py`): for a
+plugin with `filename` set, HACS looks for the file in the latest
+release's assets, then in the validated tree at the root or `dist/`.
+Both delivery paths in this repository satisfy that check.
+
 Not yet verified on a live install (check these on first use):
 
-- HACS resolving the release asset via `filename` for this repository.
+- HACS accepting this repository end to end after the first release
+  carries the asset (the initial attempt failed because the release had
+  no assets and dist was not committed).
 - `media_player/browse_media` against a real Music Assistant player.
 - Source string matching against receiver-side renamed inputs.
 - The turn_on to select_source settle delay on a standby yamaha_ynca zone.
