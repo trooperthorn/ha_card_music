@@ -12,12 +12,18 @@ on:
         type: string
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
 
 jobs:
   release:
     name: Build and attach dist to the release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Resolve tag
         id: tag
@@ -28,22 +34,18 @@ jobs:
             echo "tag=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, resolved 2026-09-03
         with:
           ref: refs/tags/${{ steps.tag.outputs.tag }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4, resolved 2026-09-03
         with:
           node-version: 22
           cache: npm
       - run: npm ci
 
       - name: Verify version lockstep
-        # HACS installs the asset from the release for this tag. VERSION is
-        # the single source of truth (CalVer is not valid SemVer, so
-        # package.json cannot carry it); if the tag disagrees with VERSION
-        # in the tagged tree, the shipped banner would lie about what is
-        # installed, so drift fails the release.
+        # VERSION is the single source of truth; see README "Versioning and releases".
         run: |
           TAG="${{ steps.tag.outputs.tag }}"
           TAG="${TAG#v}"
@@ -59,11 +61,7 @@ jobs:
       - run: npm run build
 
       - name: Attach the built card to the release
-        # Upload into an existing release when one was already created (for
-        # example from the GitHub UI), otherwise create it. This is what
-        # broke the first release attempt: a bare create fails when the
-        # release already exists, leaving the tag without assets and HACS
-        # unable to find the card.
+        # Upload-or-create: see docs/decisions.md.
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
