@@ -60,8 +60,7 @@ writeFileSync("VERSION", `${version}\n`);
 console.log(`VERSION ${current} -> ${version}`);
 
 console.log("Building dist so the committed file matches the tag...");
-const npmCmd = process.platform === "win32" ? "npm.cmd" : "npm";
-run(npmCmd, ["run", "build"], { stdio: "inherit" });
+run("npm", ["run", "build"], { stdio: "inherit", shell: process.platform === "win32" });
 
 run("git", ["add", "VERSION", "dist/music-flow-card.js"]);
 run("git", ["commit", "-m", `Release ${version}`], { stdio: "inherit" });
