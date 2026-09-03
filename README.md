@@ -14,6 +14,11 @@ Music Assistant  -->  Chromecast Audio  --optical split-->  Yamaha RX-A3080 zone
                                                        \->  Monoprice 6-zone amp zones
 ```
 
+![Illustration of the four-column layout, based on the dev harness's rx-a3080-monoprice.yaml example](docs/card-overview.svg)
+
+*This is a hand-drawn illustration of the layout, not a screen capture; run
+`npm run dev` for the real dev harness.*
+
 ## The four columns
 
 | Column | Shows | Tap |
