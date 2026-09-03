@@ -197,3 +197,5 @@ Not yet verified on a live install (check these on first use):
 - The turn_on to select_source settle delay on a standby yamaha_ynca zone.
 - Monoprice master fan-out timing against the real 5 second poll.
 - The more-info event from inside the card on current Home Assistant.
+
+See [docs/README.md](docs/README.md) for dated design decisions.

@@ -139,7 +139,6 @@ export function parseConfig(raw: unknown): ParseResult {
     checkAppearance(raw.channel, "channel", errors);
   }
 
-  // feed aliases
   let feedAliases: string[] | undefined;
   if (raw.feed_aliases !== undefined) {
     if (
@@ -153,7 +152,6 @@ export function parseConfig(raw: unknown): ParseResult {
     }
   }
 
-  // zones
   const zones: ZoneConfig[] = [];
   if (!Array.isArray(raw.zones) || raw.zones.length === 0) {
     errors.push("zones: required, at least one zone");
@@ -188,7 +186,6 @@ export function parseConfig(raw: unknown): ParseResult {
     }
   }
 
-  // groups
   const groups: GroupConfig[] = [];
   if (raw.groups !== undefined) {
     if (!Array.isArray(raw.groups)) {
@@ -207,7 +204,6 @@ export function parseConfig(raw: unknown): ParseResult {
     }
   }
 
-  // masters
   const masters: MasterConfig[] = [];
   if (raw.masters !== undefined) {
     if (!Array.isArray(raw.masters)) {

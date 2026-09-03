@@ -1,16 +1,5 @@
-# Full worked example for the reference topology: Music Assistant streams
-# to a single Chromecast Audio whose optical output is split to a Yamaha
-# RX-A3080 optical input and a Monoprice 6-zone amplifier input, so either
-# or both devices can use the feed.
-#
-# Entity ids below are placeholders. Both integrations derive entity ids
-# from device or zone names that users rename, so replace every entity
-# with the real ids from your install (Settings, Devices and Services).
-#
-# feed_aliases maps the dissimilar source naming: the same optical feed is
-# called "AUDIO2" on the Yamaha and "Source 2" on the Monoprice. Any zone
-# whose source_list contains one of these names resolves automatically; a
-# per-zone feed_source overrides the aliases when a device needs it.
+# Reference topology and configuration reference: see README.md.
+# Entity ids below are placeholders; replace with your install's real ids.
 type: custom:music-flow-card
 title: Whole Home Audio
 
@@ -61,18 +50,12 @@ zones:
       display: raw
       max: 38
 
-# Groups are Home Assistant media_player group helpers (Settings, Devices
-# and Services, Helpers, Media player group). The card reads the helper's
-# member list; members that are not configured as zones above are ignored
-# for path state because their feed source is unknown.
+# Groups: see README.md "Groups".
 groups:
   - entity: media_player.downstairs
     name: Downstairs
 
-# Masters are takeover nodes: one tap enables every zone on the amp unit
-# and sets the source in amplifier firmware (Monoprice master zone 10).
-# Child zone entities confirm on the integration's next poll, up to five
-# seconds later; the card bridges the gap optimistically.
+# Masters: see README.md "Masters (takeover)".
 masters:
   - entity: media_player.unit_1_master
     name: Amp All Zones

@@ -1,0 +1,4 @@
+# Security-sensitive delivery surfaces require owner review.
+/src/ @trooperthorn
+/.github/workflows/ @trooperthorn
+/SECURITY.md @trooperthorn
