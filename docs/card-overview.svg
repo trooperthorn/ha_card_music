@@ -1,0 +1,88 @@
+<svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="800" height="460" fill="#101014"/>
+  <text x="20" y="34" fill="#e7e7ea" font-size="17" font-weight="600">Whole Home Audio</text>
+
+  <g font-size="11" fill="#9a9aa4" letter-spacing="1">
+    <text x="20" y="66">INPUTS</text>
+    <text x="230" y="66">CHANNELS</text>
+    <text x="420" y="66">MIXES</text>
+    <text x="620" y="66">OUTPUTS</text>
+  </g>
+
+  <!-- Input node -->
+  <rect x="20" y="78" width="150" height="46" rx="8" fill="#232329"/>
+  <text x="34" y="98" fill="#e7e7ea" font-size="12" font-weight="600">Music Assistant</text>
+  <text x="34" y="113" fill="#9a9aa4" font-size="10">So What - Miles Davis</text>
+
+  <!-- Channel node -->
+  <rect x="230" y="78" width="150" height="46" rx="8" fill="#232329"/>
+  <text x="244" y="98" fill="#e7e7ea" font-size="12" font-weight="600">Chromecast Audio</text>
+  <text x="244" y="113" fill="#9a9aa4" font-size="10">Music Assistant - Vol 1...</text>
+
+  <!-- input -> channel link -->
+  <path d="M170,101 C200,101 200,101 230,101" fill="none" stroke="#2ecc9a" stroke-width="2"/>
+
+  <!-- Mix nodes -->
+  <g font-size="11">
+    <rect x="420" y="78"  width="150" height="34" rx="7" fill="#232329"/>
+    <text x="434" y="92" fill="#e7e7ea" font-size="11" font-weight="600">Great Room</text>
+    <text x="434" y="105" fill="#9a9aa4" font-size="9">Vol 35%</text>
+
+    <rect x="420" y="118" width="150" height="34" rx="7" fill="#232329"/>
+    <text x="434" y="132" fill="#6b6b74" font-size="11">Office</text>
+    <text x="434" y="145" fill="#6b6b74" font-size="9">Off</text>
+
+    <rect x="420" y="158" width="150" height="34" rx="7" fill="#232329"/>
+    <text x="434" y="172" fill="#6b6b74" font-size="11">Patio</text>
+    <text x="434" y="185" fill="#6b6b74" font-size="9">Off</text>
+
+    <rect x="420" y="198" width="150" height="34" rx="7" fill="#232329"/>
+    <text x="434" y="212" fill="#e7e7ea" font-size="11" font-weight="600">Kitchen</text>
+    <text x="434" y="225" fill="#9a9aa4" font-size="9">Vol 58%</text>
+
+    <rect x="420" y="238" width="150" height="34" rx="7" fill="#232329"/>
+    <text x="434" y="252" fill="#6b6b74" font-size="11">Dining</text>
+    <text x="434" y="265" fill="#6b6b74" font-size="9">Off</text>
+
+    <rect x="420" y="278" width="150" height="34" rx="7" fill="#232329"/>
+    <text x="434" y="292" fill="#6b6b74" font-size="11">Garage</text>
+    <text x="434" y="305" fill="#6b6b74" font-size="9">Off</text>
+
+    <rect x="420" y="318" width="150" height="34" rx="7" fill="#232329"/>
+    <text x="434" y="332" fill="#e7e7ea" font-size="11" font-weight="600">Downstairs</text>
+    <text x="434" y="345" fill="#9a9aa4" font-size="9">1 of 2 zones on</text>
+
+    <rect x="420" y="358" width="150" height="34" rx="7" fill="#232329"/>
+    <text x="434" y="372" fill="#e7e7ea" font-size="11" font-weight="600">Amp All Zones</text>
+    <text x="434" y="385" fill="#9a9aa4" font-size="9">Takeover - enables wh...</text>
+  </g>
+
+  <!-- channel -> mixes links (purple, in signal path) -->
+  <g fill="none" stroke="#c13bea" stroke-width="2">
+    <path d="M380,101 C400,101 400,95 420,95"/>
+    <path d="M380,101 C400,101 400,215 420,215"/>
+    <path d="M380,101 C400,101 400,335 420,335"/>
+    <path d="M380,101 C400,101 400,375 420,375"/>
+  </g>
+  <!-- channel -> mixes links (dim, not in signal path) -->
+  <g fill="none" stroke="#3a3a42" stroke-width="1.5">
+    <path d="M380,101 C400,101 400,135 420,135"/>
+    <path d="M380,101 C400,101 400,175 420,175"/>
+    <path d="M380,101 C400,101 400,255 420,255"/>
+    <path d="M380,101 C400,101 400,295 420,295"/>
+  </g>
+
+  <!-- Output nodes -->
+  <rect x="620" y="78" width="150" height="46" rx="8" fill="#232329"/>
+  <text x="634" y="98" fill="#e7e7ea" font-size="12" font-weight="600">Great Room</text>
+  <rect x="634" y="106" width="90" height="4" rx="2" fill="#3a3a42"/>
+  <rect x="634" y="106" width="32" height="4" rx="2" fill="#2ecc9a"/>
+
+  <rect x="620" y="158" width="150" height="46" rx="8" fill="#232329"/>
+  <text x="634" y="178" fill="#e7e7ea" font-size="12" font-weight="600">Kitchen</text>
+  <rect x="634" y="186" width="90" height="4" rx="2" fill="#3a3a42"/>
+  <rect x="634" y="186" width="52" height="4" rx="2" fill="#2ecc9a"/>
+
+  <path d="M570,95 C600,95 600,101 620,101" fill="none" stroke="#2ecc9a" stroke-width="2"/>
+  <path d="M570,215 C600,215 600,181 620,181" fill="none" stroke="#2ecc9a" stroke-width="2"/>
+</svg>
