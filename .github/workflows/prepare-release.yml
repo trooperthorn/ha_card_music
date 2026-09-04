@@ -136,7 +136,7 @@ jobs:
           npm run build
           git config user.name "$BOT_NAME"
           git config user.email "$BOT_EMAIL"
-          git add -- VERSION dist/music-flow-card.js/manifest.json
+          git add -- VERSION dist/music-flow-card.js
           git commit -m "Release v${VERSION}"
 
           if [ -z "$REMOTE_SHA" ]; then
