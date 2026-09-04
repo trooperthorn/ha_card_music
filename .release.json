@@ -1,0 +1,20 @@
+{
+  "tag_prefix": "v",
+  "timezone": "America/Chicago",
+  "release_paths": [
+    "src",
+    "VERSION",
+    "package.json",
+    "package-lock.json",
+    "vite.config.ts",
+    "dist"
+  ],
+  "version_fields": [
+    {
+      "path": "VERSION",
+      "kind": "regex",
+      "pattern": "^(\\S+)\\s*$",
+      "template": "{version}\n"
+    }
+  ]
+}

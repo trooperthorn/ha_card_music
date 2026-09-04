@@ -157,25 +157,24 @@ configuration.
 
 ## Versioning and releases
 
-Versions are CalVer `YYYY.MM.DD.V` with a `v` prefix on tags (for
-example `v2026.08.26.1`). The root `VERSION` file is the single source
-of truth: the build stamps it into the console banner, and the release
-workflow refuses a tag that does not match the `VERSION` file in the
-tagged tree. `package.json` stays at an inert `0.0.0` because npm
-requires SemVer there and CalVer is not valid SemVer.
+Versions are CalVer `YYYY.MM.DD.N` with a `v` prefix on tags. The root `VERSION`
+file is the single source of truth: the build stamps it into the console banner,
+`.release.json` names it as the shipped version field, and the Release workflow
+refuses to publish when a fresh build of `dist/music-flow-card.js` differs from
+the committed one. `package.json` stays at an inert `0.0.0` because npm requires
+SemVer there.
 
-To cut a release:
-
-```
-npm run release -- 2026.08.27.1
-```
-
-The helper validates the format, refuses a dirty tree, writes `VERSION`,
-rebuilds the committed dist, commits, tags `v2026.08.27.1`, and pushes.
-The Release workflow then builds from the tag and attaches
-`dist/music-flow-card.js` to the GitHub Release, uploading into an
-already existing release (for example one created from the GitHub UI)
-instead of failing.
+A merge to `main` is the only release path. `Release` runs on every push to
+`main`: it validates `VERSION`, rebuilds the card and checks the committed dist
+matches, creates the tag, drafts the release with `dist/music-flow-card.js`
+attached, and publishes it; a version that is already published is left alone.
+`Prepare release` runs after every successful `Release` and, when release-bearing
+files changed since the last tag, writes the next version into `VERSION`,
+rebuilds `dist`, and opens an auto-merging PR through the release GitHub App
+(variable `RELEASE_AUTOMATION_CLIENT_ID`, secret `RELEASE_AUTOMATION_PRIVATE_KEY`).
+Without those credentials, bump `VERSION` with
+`python scripts/set_version.py --next-from-tags`, run `npm run build`, commit
+both, and open a PR; the merge publishes.
 
 ## Verified and unverified
 
