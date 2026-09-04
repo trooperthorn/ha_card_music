@@ -12,9 +12,8 @@
     "dev": "vite serve dev --config vite.config.ts",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src dev scripts",
-    "test": "vitest run",
-    "release": "node scripts/release.mjs"
+    "lint": "eslint src dev",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
