@@ -12,7 +12,7 @@
     "dev": "vite serve dev --config vite.config.ts",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src dev scripts",
+    "lint": "eslint src dev",
     "test": "vitest run"
   },
   "devDependencies": {
