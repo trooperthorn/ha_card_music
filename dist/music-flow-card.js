@@ -1102,7 +1102,7 @@ function xt(e) {
   `;
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.147.0/helpers/esm/decorate.js
+//#region \0@oxc-project+runtime@0.151.0/helpers/esm/decorate.js
 function J(e, t, n, r) {
 	var i = arguments.length, a = i < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, n) : r, o;
 	if (typeof Reflect == "object" && typeof Reflect.decorate == "function") a = Reflect.decorate(e, t, n, r);
