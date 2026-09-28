@@ -19,6 +19,7 @@ import {
   toggleZone,
 } from "./actions";
 import { parseConfig, watchedEntities } from "./config";
+import { cardSizeFor, getConfigForm } from "./editor-form";
 import { deriveModel, nodeId, selectionClosure } from "./model/derive";
 import { PendingStore } from "./model/optimistic";
 import { debounce, fireMoreInfo } from "./ha-helpers";
@@ -146,7 +147,11 @@ class MusicFlowCard extends LitElement {
   }
 
   getCardSize(): number {
-    return 6;
+    return cardSizeFor(this.config);
+  }
+
+  static getConfigForm(): ReturnType<typeof getConfigForm> {
+    return getConfigForm();
   }
 
   // Sections view sizing (12-column grid). The graph is wide by nature;

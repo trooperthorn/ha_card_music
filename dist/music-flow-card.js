@@ -569,19 +569,19 @@ var Ne = {
 	"unavailable",
 	"unknown"
 ]), Ie = /* @__PURE__ */ new Set(["unavailable", "unknown"]);
-function Le(e, t) {
+function z(e, t) {
 	return `${e}:${t}`;
 }
-function Re(e) {
+function Le(e) {
 	return `out:${e}`;
 }
-function ze(e) {
+function Re(e) {
 	return e !== void 0 && !Fe.has(e.state);
 }
-function Be(e) {
+function ze(e) {
 	return e !== void 0 && !Ie.has(e.state);
 }
-function Ve(e, t, n) {
+function Be(e, t, n) {
 	if (e.feed_source) return e.feed_source;
 	let r = t.feed_aliases ?? [], i = n?.attributes.source_list;
 	if (Array.isArray(i)) {
@@ -590,23 +590,23 @@ function Ve(e, t, n) {
 	}
 	return r[0];
 }
-function He(e, t, n) {
+function Ve(e, t, n) {
 	let r = n?.attributes.source;
 	return typeof r != "string" || r === "" || r === "Unknown" ? !1 : e.feed_source ? r === e.feed_source : (t.feed_aliases ?? []).includes(r);
 }
-function z(e, t, n) {
+function B(e, t, n) {
 	return e ?? t?.attributes.friendly_name ?? n;
 }
-function B(e, t, n, r, i) {
+function V(e, t, n, r, i) {
 	return {
-		id: Le(e, t),
+		id: z(e, t),
 		kind: e,
 		entity: t,
 		name: r,
 		icon: i,
 		subtitle: "",
 		found: n !== void 0,
-		available: Be(n),
+		available: ze(n),
 		inPath: !1,
 		partial: !1,
 		offPath: !1,
@@ -614,12 +614,12 @@ function B(e, t, n, r, i) {
 		muted: n?.attributes.is_volume_muted === !0
 	};
 }
-function Ue(e) {
+function He(e) {
 	let t = e?.attributes.volume_level;
 	return typeof t == "number" ? Math.round(t * 100) : void 0;
 }
-function We(e, t) {
-	let n = e.states[t.input.entity], r = B("input", t.input.entity, n, z(t.input.name, n, "Music Assistant"), t.input.icon ?? "mdi:music-box-multiple");
+function Ue(e, t) {
+	let n = e.states[t.input.entity], r = V("input", t.input.entity, n, B(t.input.name, n, "Music Assistant"), t.input.icon ?? "mdi:music-box-multiple");
 	if (!r.found) r.subtitle = "Entity not found";
 	else if (!r.available) r.subtitle = "Unavailable";
 	else if (n && n.state === "playing") {
@@ -628,25 +628,25 @@ function We(e, t) {
 	} else n && n.state === "paused" ? (r.subtitle = "Paused", r.inPath = !0) : r.subtitle = "Nothing playing · tap to browse";
 	return r;
 }
-function Ge(e, t) {
-	let n = e.states[t.channel.entity], r = B("channel", t.channel.entity, n, z(t.channel.name, n, "Chromecast"), t.channel.icon ?? "mdi:cast-audio");
+function We(e, t) {
+	let n = e.states[t.channel.entity], r = V("channel", t.channel.entity, n, B(t.channel.name, n, "Chromecast"), t.channel.icon ?? "mdi:cast-audio");
 	if (!r.found) r.subtitle = "Entity not found";
 	else if (!r.available) r.subtitle = "Unavailable";
 	else if (n && (n.state === "playing" || n.state === "paused")) {
 		r.inPath = !0;
-		let e = Ue(n), t = n.attributes.app_name, i = [];
+		let e = He(n), t = n.attributes.app_name, i = [];
 		typeof t == "string" && t.length > 0 && i.push(t), e !== void 0 && i.push(`Vol ${e}%`), r.subtitle = i.join(" · ") || "Streaming";
 	} else r.subtitle = "No signal";
 	return r;
 }
-function Ke(e, t, n, r) {
-	let i = n.overlay(r.entity, e.states[r.entity]), a = B("zone", r.entity, i, z(r.name, i, r.entity), r.icon ?? "mdi:speaker");
+function Ge(e, t, n, r) {
+	let i = n.overlay(r.entity, e.states[r.entity]), a = V("zone", r.entity, i, B(r.name, i, r.entity), r.icon ?? "mdi:speaker");
 	a.pending = n.has(r.entity);
-	let o = ze(i), s = He(r, t, i);
+	let o = Re(i), s = Ve(r, t, i);
 	if (a.inPath = o && s, a.offPath = o && !s, !a.found) a.subtitle = "Entity not found";
 	else if (!a.available) a.subtitle = "Unavailable";
 	else if (a.inPath) {
-		let e = Ue(i);
+		let e = He(i);
 		a.subtitle = e === void 0 ? "On" : `Vol ${e}%`;
 	} else if (a.offPath) {
 		let e = i?.attributes.source;
@@ -654,16 +654,16 @@ function Ke(e, t, n, r) {
 	} else a.subtitle = "Off";
 	return a;
 }
-function qe(e, t, n, r, i) {
-	let a = e.states[r.entity], o = B("group", r.entity, a, z(r.name, a, r.entity), r.icon ?? "mdi:speaker-multiple");
+function Ke(e, t, n, r, i) {
+	let a = e.states[r.entity], o = V("group", r.entity, a, B(r.name, a, r.entity), r.icon ?? "mdi:speaker-multiple");
 	o.pending = n.has(r.entity);
 	let s = (Array.isArray(a?.attributes.entity_id) ? a.attributes.entity_id : []).map((e) => i.get(e)).filter((e) => e !== void 0), c = s.filter((e) => e.inPath).length;
 	return o.memberTotal = s.length, o.memberActive = c, o.members = s.map((e) => e.id), o.inPath = s.length > 0 && c === s.length, o.partial = c > 0 && c < s.length, o.subtitle = o.found ? s.length === 0 ? "No configured member zones" : o.inPath ? `All ${s.length} zones on` : o.partial ? `${c} of ${s.length} zones on` : "Off" : "Entity not found", o;
 }
-function Je(e, t, n, r) {
-	let i = n.overlay(r.entity, e.states[r.entity]), a = B("master", r.entity, i, z(r.name, i, r.entity), r.icon ?? "mdi:speaker-multiple");
+function qe(e, t, n, r) {
+	let i = n.overlay(r.entity, e.states[r.entity]), a = V("master", r.entity, i, B(r.name, i, r.entity), r.icon ?? "mdi:speaker-multiple");
 	a.pending = n.has(r.entity);
-	let o = ze(i), s = He(r, t, i);
+	let o = Re(i), s = Ve(r, t, i);
 	if (a.inPath = o && s, a.offPath = o && !s, !a.found) a.subtitle = "Entity not found";
 	else if (!a.available) a.subtitle = "Unavailable";
 	else if (a.inPath) a.subtitle = "Takeover active · all unit zones";
@@ -673,7 +673,7 @@ function Je(e, t, n, r) {
 	} else a.subtitle = "Takeover · enables whole unit";
 	return a;
 }
-function Ye(e, t, n, r) {
+function Je(e, t, n, r) {
 	let i = t.overlay(n.entity, e.states[n.entity]), a = typeof i?.attributes.volume_level == "number" ? i.attributes.volume_level : 0, o = typeof i?.attributes.supported_features == "number" ? i.attributes.supported_features : 0, s = n.volume?.display ?? "percent", c = "";
 	if (s === "raw" && n.volume?.max) c = `${Math.round(a * n.volume.max)}/${n.volume.max}`;
 	else if (s === "db") {
@@ -684,7 +684,7 @@ function Ye(e, t, n, r) {
 		}
 	}
 	return {
-		id: Re(n.entity),
+		id: Le(n.entity),
 		zoneId: r.id,
 		entity: n.entity,
 		name: r.name,
@@ -697,16 +697,16 @@ function Ye(e, t, n, r) {
 		hasMute: !!(o & 8)
 	};
 }
-function Xe(e, t, n) {
-	let r = We(e, t), i = Ge(e, t), a = /* @__PURE__ */ new Map(), o = /* @__PURE__ */ new Map();
-	for (let r of t.zones) a.set(r.entity, Ke(e, t, n, r)), o.set(r.entity, r);
+function Ye(e, t, n) {
+	let r = Ue(e, t), i = We(e, t), a = /* @__PURE__ */ new Map(), o = /* @__PURE__ */ new Map();
+	for (let r of t.zones) a.set(r.entity, Ge(e, t, n, r)), o.set(r.entity, r);
 	let s = [...a.values()];
-	for (let r of t.groups ?? []) s.push(qe(e, t, n, r, a));
-	for (let r of t.masters ?? []) s.push(Je(e, t, n, r));
+	for (let r of t.groups ?? []) s.push(Ke(e, t, n, r, a));
+	for (let r of t.masters ?? []) s.push(qe(e, t, n, r));
 	let c = [];
 	for (let [t, r] of a) if (r.inPath) {
 		let i = o.get(t);
-		i && c.push(Ye(e, n, i, r));
+		i && c.push(Je(e, n, i, r));
 	}
 	let l = [], u = r.inPath && i.inPath;
 	l.push({
@@ -738,7 +738,7 @@ function Xe(e, t, n) {
 		links: l
 	};
 }
-function Ze(e, t) {
+function Xe(e, t) {
 	if (t === null) return null;
 	let n = /* @__PURE__ */ new Set(), r = [e.input.id, e.channel.id], i = (t) => {
 		n.add(t);
@@ -763,27 +763,27 @@ function Ze(e, t) {
 }
 //#endregion
 //#region src/actions.ts
-var Qe = 300;
-function $e(e) {
+var Ze = 300;
+function Qe(e) {
 	return new Promise((t) => setTimeout(t, e));
 }
-async function V(e, t, n, r, i) {
-	let a = Ve(n, r, e.states[n.entity]);
+async function H(e, t, n, r, i) {
+	let a = Be(n, r, e.states[n.entity]);
 	t.set(n.entity, a ? {
 		state: "on",
 		source: a
-	} : { state: "on" }, i, Date.now()), await e.callService("media_player", "turn_on", { entity_id: n.entity }), a && (await $e(Qe), await e.callService("media_player", "select_source", {
+	} : { state: "on" }, i, Date.now()), await e.callService("media_player", "turn_on", { entity_id: n.entity }), a && (await Qe(Ze), await e.callService("media_player", "select_source", {
 		entity_id: n.entity,
 		source: a
 	}));
 }
-async function et(e, t, n, r) {
+async function $e(e, t, n, r) {
 	t.set(n, { state: "off" }, r, Date.now()), await e.callService("media_player", "turn_off", { entity_id: n });
 }
-async function tt(e, t, n, r, i, a) {
-	i.inPath ? await et(e, t, r.entity, a) : await V(e, t, r, n, a);
+async function et(e, t, n, r, i, a) {
+	i.inPath ? await $e(e, t, r.entity, a) : await H(e, t, r, n, a);
 }
-async function nt(e, t, n, r, i, a, o) {
+async function tt(e, t, n, r, i, a, o) {
 	let s = e.states[r], c = Array.isArray(s?.attributes.entity_id) ? s.attributes.entity_id : [];
 	if (i.inPath) {
 		t.set(r, { state: "off" }, o, Date.now());
@@ -797,25 +797,25 @@ async function nt(e, t, n, r, i, a, o) {
 		return t === void 0 || !t.inPath;
 	});
 	t.set(r, { state: "on" }, o, Date.now());
-	for (let r of l) await V(e, t, r, n, o);
+	for (let r of l) await H(e, t, r, n, o);
 }
-async function rt(e, t, n, r, i, a) {
-	i.inPath ? await et(e, t, r.entity, a) : await V(e, t, r, n, a);
+async function nt(e, t, n, r, i, a) {
+	i.inPath ? await $e(e, t, r.entity, a) : await H(e, t, r, n, a);
 }
-async function it(e, t, n, r, i) {
+async function rt(e, t, n, r, i) {
 	let a = Math.min(1, Math.max(0, r));
 	t.set(n, { volume_level: a }, i, Date.now()), await e.callService("media_player", "volume_set", {
 		entity_id: n,
 		volume_level: a
 	});
 }
-async function at(e, t, n, r, i) {
+async function it(e, t, n, r, i) {
 	t.set(n, { is_volume_muted: !r }, i, Date.now()), await e.callService("media_player", "volume_mute", {
 		entity_id: n,
 		is_volume_muted: !r
 	});
 }
-async function ot(e, t, n, r) {
+async function at(e, t, n, r) {
 	await e.callService("media_player", "play_media", {
 		entity_id: t,
 		media_content_id: n,
@@ -824,7 +824,7 @@ async function ot(e, t, n, r) {
 }
 //#endregion
 //#region src/config.ts
-var st = /* @__PURE__ */ new Set([
+var ot = /* @__PURE__ */ new Set([
 	"type",
 	"title",
 	"input",
@@ -840,53 +840,53 @@ var st = /* @__PURE__ */ new Set([
 	"layout_options",
 	"grid_options",
 	"visibility"
-]), ct = /* @__PURE__ */ new Set([
+]), st = /* @__PURE__ */ new Set([
 	"percent",
 	"db",
 	"raw"
 ]);
-function H(e) {
+function U(e) {
 	return typeof e == "object" && !!e && !Array.isArray(e);
 }
-function U(e) {
+function W(e) {
 	return typeof e == "string" && e.trim().length > 0;
 }
-function W(e, t, n, r) {
-	if (!U(e)) {
+function G(e, t, n, r) {
+	if (!W(e)) {
 		r.push(`${n}: required and must be a ${t} entity id`);
 		return;
 	}
 	e.startsWith(`${t}.`) || r.push(`${n}: "${e}" must be in the ${t} domain`);
 }
-function G(e, t, n) {
-	e.name !== void 0 && !U(e.name) && n.push(`${t}.name: must be a non-empty string`), e.icon !== void 0 && !U(e.icon) && n.push(`${t}.icon: must be a non-empty string`);
+function K(e, t, n) {
+	e.name !== void 0 && !W(e.name) && n.push(`${t}.name: must be a non-empty string`), e.icon !== void 0 && !W(e.icon) && n.push(`${t}.icon: must be a non-empty string`);
 }
-function lt(e, t, n) {
+function ct(e, t, n) {
 	if (e === void 0) return;
-	if (!H(e)) {
+	if (!U(e)) {
 		n.push(`${t}: must be a mapping with display/entity/max`);
 		return;
 	}
 	let r = e.display ?? "percent";
-	return (typeof r != "string" || !ct.has(r)) && n.push(`${t}.display: must be one of percent, db, raw`), r === "db" && e.entity !== void 0 && W(e.entity, "number", `${t}.entity`, n), r === "raw" && (typeof e.max != "number" || e.max <= 0) && n.push(`${t}.max: display "raw" requires a positive max (38 for Monoprice)`), e;
+	return (typeof r != "string" || !st.has(r)) && n.push(`${t}.display: must be one of percent, db, raw`), r === "db" && e.entity !== void 0 && G(e.entity, "number", `${t}.entity`, n), r === "raw" && (typeof e.max != "number" || e.max <= 0) && n.push(`${t}.max: display "raw" requires a positive max (38 for Monoprice)`), e;
 }
-function ut(e) {
+function lt(e) {
 	let t = [];
-	if (!H(e)) return { errors: ["configuration must be a YAML mapping"] };
-	for (let n of Object.keys(e)) st.has(n) || t.push(`unknown option "${n}" (typo?)`);
-	e.title !== void 0 && !U(e.title) && t.push("title: must be a non-empty string"), H(e.input) ? (W(e.input.entity, "media_player", "input.entity", t), G(e.input, "input", t)) : t.push("input: required, with input.entity set to the Music Assistant player"), H(e.channel) ? (W(e.channel.entity, "media_player", "channel.entity", t), G(e.channel, "channel", t)) : t.push("channel: required, with channel.entity set to the Chromecast player");
+	if (!U(e)) return { errors: ["configuration must be a YAML mapping"] };
+	for (let n of Object.keys(e)) ot.has(n) || t.push(`unknown option "${n}" (typo?)`);
+	e.title !== void 0 && !W(e.title) && t.push("title: must be a non-empty string"), U(e.input) ? (G(e.input.entity, "media_player", "input.entity", t), K(e.input, "input", t)) : t.push("input: required, with input.entity set to the Music Assistant player"), U(e.channel) ? (G(e.channel.entity, "media_player", "channel.entity", t), K(e.channel, "channel", t)) : t.push("channel: required, with channel.entity set to the Chromecast player");
 	let n;
-	e.feed_aliases !== void 0 && (!Array.isArray(e.feed_aliases) || e.feed_aliases.length === 0 || !e.feed_aliases.every(U) ? t.push("feed_aliases: must be a non-empty list of source names") : n = e.feed_aliases.map((e) => e.trim()));
+	e.feed_aliases !== void 0 && (!Array.isArray(e.feed_aliases) || e.feed_aliases.length === 0 || !e.feed_aliases.every(W) ? t.push("feed_aliases: must be a non-empty list of source names") : n = e.feed_aliases.map((e) => e.trim()));
 	let r = [];
 	if (!Array.isArray(e.zones) || e.zones.length === 0) t.push("zones: required, at least one zone");
 	else {
 		e.zones.forEach((e, i) => {
 			let a = `zones[${i}]`;
-			if (!H(e)) {
+			if (!U(e)) {
 				t.push(`${a}: must be a mapping`);
 				return;
 			}
-			W(e.entity, "media_player", `${a}.entity`, t), G(e, a, t), e.feed_source !== void 0 && !U(e.feed_source) && t.push(`${a}.feed_source: must be a non-empty source name`), e.feed_source === void 0 && n === void 0 && t.push(`${a}: needs feed_source, or set top-level feed_aliases covering this device`), lt(e.volume, `${a}.volume`, t), r.push(e);
+			G(e.entity, "media_player", `${a}.entity`, t), K(e, a, t), e.feed_source !== void 0 && !W(e.feed_source) && t.push(`${a}.feed_source: must be a non-empty source name`), e.feed_source === void 0 && n === void 0 && t.push(`${a}: needs feed_source, or set top-level feed_aliases covering this device`), ct(e.volume, `${a}.volume`, t), r.push(e);
 		});
 		let i = /* @__PURE__ */ new Set();
 		for (let e of r) typeof e.entity == "string" && (i.has(e.entity) && t.push(`zones: duplicate entity "${e.entity}"`), i.add(e.entity));
@@ -894,21 +894,21 @@ function ut(e) {
 	let i = [];
 	e.groups !== void 0 && (Array.isArray(e.groups) ? e.groups.forEach((e, n) => {
 		let r = `groups[${n}]`;
-		if (!H(e)) {
+		if (!U(e)) {
 			t.push(`${r}: must be a mapping`);
 			return;
 		}
-		W(e.entity, "media_player", `${r}.entity`, t), G(e, r, t), i.push(e);
+		G(e.entity, "media_player", `${r}.entity`, t), K(e, r, t), i.push(e);
 	}) : t.push("groups: must be a list"));
 	let a = [];
 	return e.masters !== void 0 && (Array.isArray(e.masters) ? e.masters.forEach((e, r) => {
 		let i = `masters[${r}]`;
-		if (!H(e)) {
+		if (!U(e)) {
 			t.push(`${i}: must be a mapping`);
 			return;
 		}
-		W(e.entity, "media_player", `${i}.entity`, t), G(e, i, t), e.feed_source !== void 0 && !U(e.feed_source) && t.push(`${i}.feed_source: must be a non-empty source name`), e.feed_source === void 0 && n === void 0 && t.push(`${i}: needs feed_source, or set top-level feed_aliases covering this device`), a.push(e);
-	}) : t.push("masters: must be a list")), e.columns !== void 0 && !H(e.columns) && t.push("columns: must be a mapping of inputs/channels/mixes/outputs labels"), e.colors !== void 0 && !H(e.colors) && t.push("colors: must be a mapping of input_link/channel_link/output_link"), e.optimistic_ttl !== void 0 && (typeof e.optimistic_ttl != "number" || e.optimistic_ttl < 0) && t.push("optimistic_ttl: must be a non-negative number of milliseconds"), t.length > 0 ? { errors: t } : {
+		G(e.entity, "media_player", `${i}.entity`, t), K(e, i, t), e.feed_source !== void 0 && !W(e.feed_source) && t.push(`${i}.feed_source: must be a non-empty source name`), e.feed_source === void 0 && n === void 0 && t.push(`${i}: needs feed_source, or set top-level feed_aliases covering this device`), a.push(e);
+	}) : t.push("masters: must be a list")), e.columns !== void 0 && !U(e.columns) && t.push("columns: must be a mapping of inputs/channels/mixes/outputs labels"), e.colors !== void 0 && !U(e.colors) && t.push("colors: must be a mapping of input_link/channel_link/output_link"), e.optimistic_ttl !== void 0 && (typeof e.optimistic_ttl != "number" || e.optimistic_ttl < 0) && t.push("optimistic_ttl: must be a non-negative number of milliseconds"), t.length > 0 ? { errors: t } : {
 		config: {
 			...e,
 			feed_aliases: n,
@@ -920,7 +920,7 @@ function ut(e) {
 		errors: []
 	};
 }
-function dt(e) {
+function ut(e) {
 	let t = [e.input.entity, e.channel.entity];
 	for (let n of e.zones) t.push(n.entity), n.volume?.entity && t.push(n.volume.entity);
 	for (let n of e.groups ?? []) t.push(n.entity);
@@ -928,9 +928,107 @@ function dt(e) {
 	return t;
 }
 //#endregion
+//#region src/editor-form.ts
+var dt = (e, t) => ({
+	name: e,
+	type: "expandable",
+	title: t,
+	schema: [{
+		name: "entity",
+		required: !0,
+		selector: { entity: { domain: "media_player" } }
+	}, {
+		name: "",
+		type: "grid",
+		flatten: !0,
+		schema: [{
+			name: "name",
+			selector: { text: {} }
+		}, {
+			name: "icon",
+			selector: { icon: {} }
+		}]
+	}]
+}), ft = [
+	{
+		name: "title",
+		selector: { text: {} }
+	},
+	dt("input", "Input (Music Assistant player)"),
+	dt("channel", "Channel (Chromecast player)"),
+	{
+		name: "feed_aliases",
+		selector: { text: { multiple: !0 } }
+	},
+	{
+		name: "optimistic_ttl",
+		selector: { number: {
+			min: 0,
+			step: 500,
+			mode: "box",
+			unit_of_measurement: "ms"
+		} }
+	},
+	{
+		name: "columns",
+		type: "expandable",
+		title: "Column labels",
+		schema: [
+			"inputs",
+			"channels",
+			"mixes",
+			"outputs"
+		].map((e) => ({
+			name: e,
+			selector: { text: {} }
+		}))
+	},
+	{
+		name: "colors",
+		type: "expandable",
+		title: "Link colors",
+		schema: [
+			"input_link",
+			"channel_link",
+			"output_link"
+		].map((e) => ({
+			name: e,
+			selector: { text: {} }
+		}))
+	}
+], pt = {
+	title: "Title",
+	entity: "Entity",
+	name: "Name",
+	icon: "Icon",
+	feed_aliases: "Feed aliases",
+	optimistic_ttl: "Optimistic timeout",
+	inputs: "Inputs",
+	channels: "Channels",
+	mixes: "Mixes",
+	outputs: "Outputs",
+	input_link: "Source to stream",
+	channel_link: "Stream to zone",
+	output_link: "Zone to output"
+}, mt = {
+	feed_aliases: "Source names that count as the Chromecast feed on any device. Zones, groups, and masters are configured in YAML.",
+	optimistic_ttl: "Milliseconds before an unconfirmed optimistic value is discarded (default 8000)."
+};
+function ht() {
+	return {
+		schema: ft,
+		computeLabel: (e) => pt[e.name],
+		computeHelper: (e) => mt[e.name]
+	};
+}
+function gt(e) {
+	let t = (e?.zones?.length ?? 1) + (e?.groups?.length ?? 0) + (e?.masters?.length ?? 0);
+	return Math.max(4, 3 + Math.ceil(t * 1.5));
+}
+//#endregion
 //#region src/model/optimistic.ts
-var ft = .03;
-function pt(e, t) {
+var _t = .03;
+function vt(e, t) {
 	if (e.state !== void 0) {
 		if (e.state === "on") {
 			if ([
@@ -944,11 +1042,11 @@ function pt(e, t) {
 	if (e.source !== void 0 && t.attributes.source !== e.source) return !1;
 	if (e.volume_level !== void 0) {
 		let n = t.attributes.volume_level;
-		if (typeof n != "number" || Math.abs(n - e.volume_level) > ft) return !1;
+		if (typeof n != "number" || Math.abs(n - e.volume_level) > _t) return !1;
 	}
 	return e.is_volume_muted === void 0 || t.attributes.is_volume_muted === e.is_volume_muted;
 }
-var mt = class {
+var yt = class {
 	constructor() {
 		this.entries = /* @__PURE__ */ new Map();
 	}
@@ -966,7 +1064,7 @@ var mt = class {
 	reconcile(e, t) {
 		for (let [n, r] of this.entries) {
 			let i = e.states[n];
-			(i && pt(r.expect, i) || t - r.setAt > r.ttl) && this.entries.delete(n);
+			(i && vt(r.expect, i) || t - r.setAt > r.ttl) && this.entries.delete(n);
 		}
 	}
 	has(e) {
@@ -996,21 +1094,21 @@ var mt = class {
 };
 //#endregion
 //#region src/ha-helpers.ts
-function ht(e, t, n, r) {
+function bt(e, t, n, r) {
 	let i = {
 		type: "media_player/browse_media",
 		entity_id: t
 	};
 	return n !== void 0 && (i.media_content_id = n), r !== void 0 && (i.media_content_type = r), e.callWS(i);
 }
-function gt(e, t) {
+function xt(e, t) {
 	e.dispatchEvent(new CustomEvent("hass-more-info", {
 		detail: { entityId: t },
 		bubbles: !0,
 		composed: !0
 	}));
 }
-function _t(e, t) {
+function St(e, t) {
 	let n;
 	return (...r) => {
 		n !== void 0 && clearTimeout(n), n = setTimeout(() => {
@@ -1018,17 +1116,17 @@ function _t(e, t) {
 		}, t);
 	};
 }
-var vt = 500, K = 10;
-function yt(e, t, n) {
+var Ct = 500, wt = 10;
+function Tt(e, t, n) {
 	let r, i = !1, a = 0, o = 0, s = () => {
 		r !== void 0 && (clearTimeout(r), r = void 0);
 	};
 	e.addEventListener("pointerdown", (e) => {
 		i = !1, a = e.clientX, o = e.clientY, n && (s(), r = setTimeout(() => {
 			i = !0, n();
-		}, vt));
+		}, Ct));
 	}), e.addEventListener("pointermove", (e) => {
-		(Math.abs(e.clientX - a) > K || Math.abs(e.clientY - o) > K) && s();
+		(Math.abs(e.clientX - a) > wt || Math.abs(e.clientY - o) > wt) && s();
 	}), e.addEventListener("pointerup", s), e.addEventListener("pointerleave", s), e.addEventListener("pointercancel", s), e.addEventListener("click", (e) => {
 		if (i) {
 			e.stopPropagation(), e.preventDefault(), i = !1;
@@ -1052,7 +1150,7 @@ var q = o`
     --mfc-warn: var(--warning-color, #f59e0b);
     --mfc-error: var(--error-color, #ef4444);
   }
-`, bt = o`
+`, Et = o`
   .pill {
     display: inline-flex;
     align-items: center;
@@ -1070,7 +1168,7 @@ var q = o`
 `;
 //#endregion
 //#region src/view/legend.ts
-function xt(e) {
+function Dt(e) {
 	let t = {
 		...Ne,
 		...e
@@ -1111,7 +1209,7 @@ function J(e, t, n, r) {
 }
 //#endregion
 //#region src/view/browse-panel.ts
-var St, Y = class extends I {
+var Ot, Y = class extends I {
 	constructor(...e) {
 		super(...e), this.entity = "", this.stack = [], this.loading = !1, this.error = null;
 	}
@@ -1124,7 +1222,7 @@ var St, Y = class extends I {
 	async load(e) {
 		this.loading = !0, this.error = null;
 		try {
-			let t = await ht(this.hass, this.entity, e?.media_content_id, e?.media_content_type);
+			let t = await bt(this.hass, this.entity, e?.media_content_id, e?.media_content_type);
 			this.stack = [...this.stack, {
 				title: t.title || e?.title || "Media",
 				item: t,
@@ -1197,7 +1295,7 @@ var St, Y = class extends I {
 		return this.addEventListener("click", () => this.close()), e;
 	}
 };
-St = Y, St.styles = [q, o`
+Ot = Y, Ot.styles = [q, o`
       :host {
         position: absolute;
         inset: 0;
@@ -1303,7 +1401,7 @@ St = Y, St.styles = [q, o`
     `], J([L({ attribute: !1 })], Y.prototype, "hass", void 0), J([L()], Y.prototype, "entity", void 0), J([R()], Y.prototype, "stack", void 0), J([R()], Y.prototype, "loading", void 0), J([R()], Y.prototype, "error", void 0), customElements.define("mfc-browse", Y);
 //#endregion
 //#region src/view/links-overlay.ts
-function Ct(e, t) {
+function kt(e, t) {
 	let n = {
 		...Ne,
 		...t
@@ -1314,8 +1412,8 @@ function Ct(e, t) {
 		case "output": return n.output_link;
 	}
 }
-function wt(e, t, n) {
-	let { x1: r, y1: i, x2: a, y2: o } = e, s = Math.max(24, (a - r) / 2), c = `M ${r} ${i} C ${r + s} ${i}, ${a - s} ${o}, ${a} ${o}`, l = t === "path", u = l ? Ct(e.link, n) : "var(--mfc-idle-link)";
+function At(e, t, n) {
+	let { x1: r, y1: i, x2: a, y2: o } = e, s = Math.max(24, (a - r) / 2), c = `M ${r} ${i} C ${r + s} ${i}, ${a - s} ${o}, ${a} ${o}`, l = t === "path", u = l ? kt(e.link, n) : "var(--mfc-idle-link)";
 	return ye`
     <g opacity=${t === "faded" ? .35 : 1}>
       <path
@@ -1335,12 +1433,12 @@ function wt(e, t, n) {
 }
 //#endregion
 //#region src/view/node-card.ts
-var Tt, X = class extends I {
+var jt, X = class extends I {
 	constructor(...e) {
 		super(...e), this.dimmed = !1, this.selected = !1;
 	}
 	firstUpdated() {
-		yt(this, () => {
+		Tt(this, () => {
 			if (!this.node.found || !this.node.available) {
 				this.node.found && this.emit("node-more-info");
 				return;
@@ -1382,7 +1480,7 @@ var Tt, X = class extends I {
     `;
 	}
 };
-Tt = X, Tt.styles = [q, o`
+jt = X, jt.styles = [q, o`
       :host {
         display: block;
       }
@@ -1496,7 +1594,7 @@ Tt = X, Tt.styles = [q, o`
     `], J([L({ attribute: !1 })], X.prototype, "node", void 0), J([L({ type: Boolean })], X.prototype, "dimmed", void 0), J([L({ type: Boolean })], X.prototype, "selected", void 0), customElements.define("mfc-node", X);
 //#endregion
 //#region src/view/output-row.ts
-var Et, Z = class extends I {
+var Mt, Z = class extends I {
 	constructor(...e) {
 		super(...e), this.dimmed = !1, this.selected = !1;
 	}
@@ -1562,7 +1660,7 @@ var Et, Z = class extends I {
     `;
 	}
 };
-Et = Z, Et.styles = [q, o`
+Mt = Z, Mt.styles = [q, o`
       :host {
         display: block;
       }
@@ -1647,7 +1745,7 @@ Et = Z, Et.styles = [q, o`
     `], J([L({ attribute: !1 })], Z.prototype, "row", void 0), J([L({ type: Boolean })], Z.prototype, "dimmed", void 0), J([L({ type: Boolean })], Z.prototype, "selected", void 0), customElements.define("mfc-output", Z);
 //#endregion
 //#region src/view/graph-view.ts
-var Dt, Q = class extends I {
+var Nt, Q = class extends I {
 	constructor(...e) {
 		super(...e), this.closure = null, this.selection = null, this.anchors = null, this.measureQueued = !1;
 	}
@@ -1729,7 +1827,7 @@ var Dt, Q = class extends I {
 		return D`
       <div class="wrap">
         <svg class="links" aria-hidden="true">
-          ${this.measuredLinks().map((e) => wt(e, this.emphasis(e), this.colors))}
+          ${this.measuredLinks().map((e) => At(e, this.emphasis(e), this.colors))}
         </svg>
         <div class="grid">
           <div class="col">
@@ -1778,9 +1876,9 @@ var Dt, Q = class extends I {
     `;
 	}
 };
-Dt = Q, Dt.styles = [
+Nt = Q, Nt.styles = [
 	q,
-	bt,
+	Et,
 	o`
       :host {
         display: block;
@@ -1829,25 +1927,28 @@ Dt = Q, Dt.styles = [
 ], J([L({ attribute: !1 })], Q.prototype, "model", void 0), J([L({ attribute: !1 })], Q.prototype, "closure", void 0), J([L({ attribute: !1 })], Q.prototype, "colors", void 0), J([L({ attribute: !1 })], Q.prototype, "columns", void 0), J([L({ attribute: !1 })], Q.prototype, "selection", void 0), J([R()], Q.prototype, "anchors", void 0), customElements.define("mfc-graph", Q);
 //#endregion
 //#region src/music-flow-card.ts
-var Ot, $ = class extends I {
+var Pt, $ = class extends I {
 	constructor(...e) {
-		super(...e), this.selection = null, this.browsing = !1, this.pending = new mt(), this.watched = [], this.debouncedVolume = _t((e, t) => {
-			this._hass && this.config && it(this._hass, this.pending, e, t, this.ttl());
+		super(...e), this.selection = null, this.browsing = !1, this.pending = new yt(), this.watched = [], this.debouncedVolume = St((e, t) => {
+			this._hass && this.config && rt(this._hass, this.pending, e, t, this.ttl());
 		}, 250), this.onKeyDown = (e) => {
 			e.key === "Escape" && (this.selection = null, this.browsing = !1);
 		};
 	}
 	setConfig(e) {
-		let t = ut(e);
+		let t = lt(e);
 		if (!t.config) throw Error(`music-flow-card configuration problems:\n- ${t.errors.join("\n- ")}`);
-		this.config = t.config, this.watched = dt(t.config), this.pending.clear(), this.selection = null, this.refresh();
+		this.config = t.config, this.watched = ut(t.config), this.pending.clear(), this.selection = null, this.refresh();
 	}
 	set hass(e) {
 		let t = this._hass;
 		this._hass = e, this.config && (this.pending.reconcile(e, Date.now()), (t === void 0 || this.watched.some((n) => t.states[n] !== e.states[n])) && this.refresh());
 	}
 	getCardSize() {
-		return 6;
+		return gt(this.config);
+	}
+	static getConfigForm() {
+		return ht();
 	}
 	getGridOptions() {
 		return {
@@ -1867,7 +1968,7 @@ var Ot, $ = class extends I {
 		return this.config?.optimistic_ttl ?? 8e3;
 	}
 	refresh() {
-		this._hass && this.config && (this.model = Xe(this._hass, this.config, this.pending)), this.schedulePendingSweep();
+		this._hass && this.config && (this.model = Ye(this._hass, this.config, this.pending)), this.schedulePendingSweep();
 	}
 	schedulePendingSweep() {
 		this.pendingSweep !== void 0 && (clearTimeout(this.pendingSweep), this.pendingSweep = void 0), !this.pending.isEmpty() && (this.pendingSweep = setTimeout(() => {
@@ -1905,11 +2006,11 @@ var Ot, $ = class extends I {
 		let a = this.ttl();
 		if (i.kind === "zone") {
 			let e = n.zones.find((e) => e.entity === i.entity);
-			e && tt(t, this.pending, n, e, i, a).then(() => this.refresh());
-		} else if (i.kind === "group") nt(t, this.pending, n, i.entity, i, this.zoneNodesByEntity(), a).then(() => this.refresh());
+			e && et(t, this.pending, n, e, i, a).then(() => this.refresh());
+		} else if (i.kind === "group") tt(t, this.pending, n, i.entity, i, this.zoneNodesByEntity(), a).then(() => this.refresh());
 		else if (i.kind === "master") {
 			let e = (n.masters ?? []).find((e) => e.entity === i.entity);
-			e && rt(t, this.pending, n, e, i, a).then(() => this.refresh());
+			e && nt(t, this.pending, n, e, i, a).then(() => this.refresh());
 		}
 		this.refresh();
 	}
@@ -1919,28 +2020,28 @@ var Ot, $ = class extends I {
 	render() {
 		let e = this.model, t = this.config;
 		if (!e || !t || !this._hass) return D`<div class="card">Waiting for Home Assistant state…</div>`;
-		let n = Ze(e, this.selection);
+		let n = Xe(e, this.selection);
 		return D`
       <div
         class="card"
         @node-tap=${(e) => this.onNodeTap(e.detail.id)}
         @node-more-info=${(e) => {
 			let t = e.detail.id.split(":").slice(1).join(":");
-			gt(this, t);
+			xt(this, t);
 		}}
         @output-select=${(e) => this.onOutputSelect(e.detail.id)}
-        @output-more-info=${(e) => gt(this, e.detail.entity)}
+        @output-more-info=${(e) => xt(this, e.detail.entity)}
         @output-volume=${(e) => {
 			this.debouncedVolume(e.detail.entity, e.detail.level);
 		}}
         @output-mute=${(e) => {
-			this._hass && (at(this._hass, this.pending, e.detail.entity, e.detail.muted, this.ttl()).then(() => this.refresh()), this.refresh());
+			this._hass && (it(this._hass, this.pending, e.detail.entity, e.detail.muted, this.ttl()).then(() => this.refresh()), this.refresh());
 		}}
         @browse-close=${() => {
 			this.browsing = !1;
 		}}
         @browse-play=${(e) => {
-			this.browsing = !1, this._hass && this.config && ot(this._hass, this.config.input.entity, e.detail.contentId, e.detail.contentType);
+			this.browsing = !1, this._hass && this.config && at(this._hass, this.config.input.entity, e.detail.contentId, e.detail.contentType);
 		}}
       >
         <div class="header">
@@ -1964,7 +2065,7 @@ var Ot, $ = class extends I {
           .columns=${t.columns}
           .selection=${this.selection}
         ></mfc-graph>
-        ${xt(t.colors)}
+        ${Dt(t.colors)}
         ${this.browsing ? D`
               <mfc-browse
                 .hass=${this._hass}
@@ -1975,9 +2076,9 @@ var Ot, $ = class extends I {
     `;
 	}
 };
-Ot = $, Ot.styles = [
+Pt = $, Pt.styles = [
 	q,
-	bt,
+	Et,
 	o`
       :host {
         display: block;
@@ -2035,4 +2136,4 @@ Ot = $, Ot.styles = [
 	documentationURL: "https://github.com/trooperthorn/ha_card_music"
 }), console.info("%c MUSIC-FLOW-CARD %c v2026.09.27.3 ", "background: #444; color: #fff; border-radius: 3px 0 0 3px; padding: 2px 0;", "background: #10b981; color: #fff; border-radius: 0 3px 3px 0; padding: 2px 0;");
 //#endregion
-export { $ as MusicFlowCard, Le as nodeId };
+export { $ as MusicFlowCard, z as nodeId };
