@@ -98,7 +98,10 @@ resource of type JavaScript module.
 
 ## Configuration
 
-There is no visual editor in this version; configure in YAML. Invalid
+The visual editor covers the top-level options (title, input, channel,
+feed aliases, optimistic timeout, column labels, link colors). Zones,
+groups, and masters are configured in YAML; the visual editor keeps them
+as written. Invalid
 configuration makes `setConfig` throw, as the Home Assistant custom card
 contract documents, and the error message lists every collected problem
 at once so the configuration can be fixed in one edit. A missing entity

@@ -1,5 +1,6 @@
 {
   "name": "Music Flow Card",
   "render_readme": true,
-  "filename": "music-flow-card.js"
+  "filename": "music-flow-card.js",
+  "homeassistant": "2026.9.0"
 }
