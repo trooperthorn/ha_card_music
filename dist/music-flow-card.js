@@ -852,11 +852,7 @@ function W(e) {
 	return typeof e == "string" && e.trim().length > 0;
 }
 function G(e, t, n, r) {
-	if (!W(e)) {
-		r.push(`${n}: required and must be a ${t} entity id`);
-		return;
-	}
-	e.startsWith(`${t}.`) || r.push(`${n}: "${e}" must be in the ${t} domain`);
+	W(e) ? e.startsWith(`${t}.`) || r.push(`${n}: "${e}" must be in the ${t} domain`) : r.push(`${n}: required and must be a ${t} entity id`);
 }
 function K(e, t, n) {
 	e.name !== void 0 && !W(e.name) && n.push(`${t}.name: must be a non-empty string`), e.icon !== void 0 && !W(e.icon) && n.push(`${t}.icon: must be a non-empty string`);
@@ -882,11 +878,7 @@ function lt(e) {
 	else {
 		e.zones.forEach((e, i) => {
 			let a = `zones[${i}]`;
-			if (!U(e)) {
-				t.push(`${a}: must be a mapping`);
-				return;
-			}
-			G(e.entity, "media_player", `${a}.entity`, t), K(e, a, t), e.feed_source !== void 0 && !W(e.feed_source) && t.push(`${a}.feed_source: must be a non-empty source name`), e.feed_source === void 0 && n === void 0 && t.push(`${a}: needs feed_source, or set top-level feed_aliases covering this device`), ct(e.volume, `${a}.volume`, t), r.push(e);
+			U(e) ? (G(e.entity, "media_player", `${a}.entity`, t), K(e, a, t), e.feed_source !== void 0 && !W(e.feed_source) && t.push(`${a}.feed_source: must be a non-empty source name`), e.feed_source === void 0 && n === void 0 && t.push(`${a}: needs feed_source, or set top-level feed_aliases covering this device`), ct(e.volume, `${a}.volume`, t), r.push(e)) : t.push(`${a}: must be a mapping`);
 		});
 		let i = /* @__PURE__ */ new Set();
 		for (let e of r) typeof e.entity == "string" && (i.has(e.entity) && t.push(`zones: duplicate entity "${e.entity}"`), i.add(e.entity));
@@ -894,20 +886,12 @@ function lt(e) {
 	let i = [];
 	e.groups !== void 0 && (Array.isArray(e.groups) ? e.groups.forEach((e, n) => {
 		let r = `groups[${n}]`;
-		if (!U(e)) {
-			t.push(`${r}: must be a mapping`);
-			return;
-		}
-		G(e.entity, "media_player", `${r}.entity`, t), K(e, r, t), i.push(e);
+		U(e) ? (G(e.entity, "media_player", `${r}.entity`, t), K(e, r, t), i.push(e)) : t.push(`${r}: must be a mapping`);
 	}) : t.push("groups: must be a list"));
 	let a = [];
 	return e.masters !== void 0 && (Array.isArray(e.masters) ? e.masters.forEach((e, r) => {
 		let i = `masters[${r}]`;
-		if (!U(e)) {
-			t.push(`${i}: must be a mapping`);
-			return;
-		}
-		G(e.entity, "media_player", `${i}.entity`, t), K(e, i, t), e.feed_source !== void 0 && !W(e.feed_source) && t.push(`${i}.feed_source: must be a non-empty source name`), e.feed_source === void 0 && n === void 0 && t.push(`${i}: needs feed_source, or set top-level feed_aliases covering this device`), a.push(e);
+		U(e) ? (G(e.entity, "media_player", `${i}.entity`, t), K(e, i, t), e.feed_source !== void 0 && !W(e.feed_source) && t.push(`${i}.feed_source: must be a non-empty source name`), e.feed_source === void 0 && n === void 0 && t.push(`${i}: needs feed_source, or set top-level feed_aliases covering this device`), a.push(e)) : t.push(`${i}: must be a mapping`);
 	}) : t.push("masters: must be a list")), e.columns !== void 0 && !U(e.columns) && t.push("columns: must be a mapping of inputs/channels/mixes/outputs labels"), e.colors !== void 0 && !U(e.colors) && t.push("colors: must be a mapping of input_link/channel_link/output_link"), e.optimistic_ttl !== void 0 && (typeof e.optimistic_ttl != "number" || e.optimistic_ttl < 0) && t.push("optimistic_ttl: must be a non-negative number of milliseconds"), t.length > 0 ? { errors: t } : {
 		config: {
 			...e,
@@ -1128,11 +1112,7 @@ function Tt(e, t, n) {
 	}), e.addEventListener("pointermove", (e) => {
 		(Math.abs(e.clientX - a) > wt || Math.abs(e.clientY - o) > wt) && s();
 	}), e.addEventListener("pointerup", s), e.addEventListener("pointerleave", s), e.addEventListener("pointercancel", s), e.addEventListener("click", (e) => {
-		if (i) {
-			e.stopPropagation(), e.preventDefault(), i = !1;
-			return;
-		}
-		t();
+		i ? (e.stopPropagation(), e.preventDefault(), i = !1) : t();
 	});
 }
 //#endregion
@@ -1200,7 +1180,7 @@ function Dt(e) {
   `;
 }
 //#endregion
-//#region \0@oxc-project+runtime@0.151.0/helpers/esm/decorate.js
+//#region \0@oxc-project+runtime@0.153.0/helpers/esm/decorate.js
 function J(e, t, n, r) {
 	var i = arguments.length, a = i < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, n) : r, o;
 	if (typeof Reflect == "object" && typeof Reflect.decorate == "function") a = Reflect.decorate(e, t, n, r);
@@ -1244,11 +1224,7 @@ var Ot, Y = class extends I {
 		}));
 	}
 	pick(e) {
-		if (e.can_expand) {
-			this.load(e);
-			return;
-		}
-		e.can_play && this.dispatchEvent(new CustomEvent("browse-play", {
+		e.can_expand ? this.load(e) : e.can_play && this.dispatchEvent(new CustomEvent("browse-play", {
 			detail: {
 				contentId: e.media_content_id,
 				contentType: e.media_content_type
@@ -1439,11 +1415,7 @@ var jt, X = class extends I {
 	}
 	firstUpdated() {
 		Tt(this, () => {
-			if (!this.node.found || !this.node.available) {
-				this.node.found && this.emit("node-more-info");
-				return;
-			}
-			this.emit("node-tap");
+			!this.node.found || !this.node.available ? this.node.found && this.emit("node-more-info") : this.emit("node-tap");
 		}, () => this.emit("node-more-info"));
 	}
 	updated() {
