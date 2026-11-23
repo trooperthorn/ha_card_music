@@ -1,4 +1,4 @@
-//#region node_modules/@lit/reactive-element/css-tag.js
+// node_modules/@lit/reactive-element/css-tag.js
 var e = globalThis, t = e.ShadowRoot && (e.ShadyCSS === void 0 || e.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, n = Symbol(), r = /* @__PURE__ */ new WeakMap(), i = class {
 	constructor(e, t, r) {
 		if (this._$cssResult$ = !0, r !== n) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
@@ -252,8 +252,7 @@ var g = class extends HTMLElement {
 	firstUpdated(e) {}
 };
 g.elementStyles = [], g.shadowRootOptions = { mode: "open" }, g[p("elementProperties")] = /* @__PURE__ */ new Map(), g[p("finalized")] = /* @__PURE__ */ new Map(), ae?.({ ReactiveElement: g }), (f.reactiveElementVersions ??= []).push("2.1.2");
-//#endregion
-//#region node_modules/lit-html/lit-html.js
+// node_modules/lit-html/lit-html.js
 var _ = globalThis, se = (e) => e, v = _.trustedTypes, ce = v ? v.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, le = "$lit$", y = `lit$${Math.random().toFixed(9).slice(2)}$`, ue = "?" + y, de = `<${ue}>`, b = document, x = () => b.createComment(""), S = (e) => e === null || typeof e != "object" && typeof e != "function", C = Array.isArray, fe = (e) => C(e) || typeof e?.[Symbol.iterator] == "function", w = "[ 	\n\f\r]", T = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, pe = /-->/g, me = />/g, E = RegExp(`>|${w}(?:([^\\s"'>=/]+)(${w}*=${w}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), he = /'/g, ge = /"/g, _e = /^(?:script|style|textarea|title)$/i, ve = (e) => (t, ...n) => ({
 	_$litType$: e,
 	strings: t,
@@ -508,8 +507,7 @@ var ke = (e, t, n) => {
 I._$litElement$ = !0, I.finalized = !0, F.litElementHydrateSupport?.({ LitElement: I });
 var Ae = F.litElementPolyfillSupport;
 Ae?.({ LitElement: I }), (F.litElementVersions ??= []).push("4.2.2");
-//#endregion
-//#region node_modules/@lit/reactive-element/decorators/property.js
+// node_modules/@lit/reactive-element/decorators/property.js
 var je = {
 	attribute: !0,
 	type: String,
@@ -545,8 +543,7 @@ function L(e) {
 		return t.constructor.createProperty(n, e), r ? Object.getOwnPropertyDescriptor(t, n) : void 0;
 	})(e, t, n);
 }
-//#endregion
-//#region node_modules/@lit/reactive-element/decorators/state.js
+// node_modules/@lit/reactive-element/decorators/state.js
 function R(e) {
 	return L({
 		...e,
@@ -761,8 +758,7 @@ function Xe(e, t) {
 	}
 	return null;
 }
-//#endregion
-//#region src/actions.ts
+// src/actions.ts
 var Ze = 300;
 function Qe(e) {
 	return new Promise((t) => setTimeout(t, e));
@@ -822,8 +818,7 @@ async function at(e, t, n, r) {
 		media_content_type: r
 	});
 }
-//#endregion
-//#region src/config.ts
+// src/config.ts
 var ot = /* @__PURE__ */ new Set([
 	"type",
 	"title",
@@ -864,7 +859,7 @@ function ct(e, t, n) {
 		return;
 	}
 	let r = e.display ?? "percent";
-	return (typeof r != "string" || !st.has(r)) && n.push(`${t}.display: must be one of percent, db, raw`), r === "db" && e.entity !== void 0 && G(e.entity, "number", `${t}.entity`, n), r === "raw" && (typeof e.max != "number" || e.max <= 0) && n.push(`${t}.max: display "raw" requires a positive max (38 for Monoprice)`), e;
+	return typeof r == "string" && st.has(r) || n.push(`${t}.display: must be one of percent, db, raw`), r === "db" && e.entity !== void 0 && G(e.entity, "number", `${t}.entity`, n), r === "raw" && (typeof e.max != "number" || e.max <= 0) && n.push(`${t}.max: display "raw" requires a positive max (38 for Monoprice)`), e;
 }
 function lt(e) {
 	let t = [];
@@ -911,8 +906,7 @@ function ut(e) {
 	for (let n of e.masters ?? []) t.push(n.entity);
 	return t;
 }
-//#endregion
-//#region src/editor-form.ts
+// src/editor-form.ts
 var dt = (e, t) => ({
 	name: e,
 	type: "expandable",
@@ -1009,8 +1003,7 @@ function gt(e) {
 	let t = (e?.zones?.length ?? 1) + (e?.groups?.length ?? 0) + (e?.masters?.length ?? 0);
 	return Math.max(4, 3 + Math.ceil(t * 1.5));
 }
-//#endregion
-//#region src/model/optimistic.ts
+// src/model/optimistic.ts
 var _t = .03;
 function vt(e, t) {
 	if (e.state !== void 0) {
@@ -1076,8 +1069,7 @@ var yt = class {
 		this.entries.clear();
 	}
 };
-//#endregion
-//#region src/ha-helpers.ts
+// src/ha-helpers.ts
 function bt(e, t, n, r) {
 	let i = {
 		type: "media_player/browse_media",
@@ -1115,8 +1107,7 @@ function Tt(e, t, n) {
 		i ? (e.stopPropagation(), e.preventDefault(), i = !1) : t();
 	});
 }
-//#endregion
-//#region src/styles.ts
+// src/styles.ts
 var q = o`
   :host {
     --mfc-bg: var(--ha-card-background, var(--card-background-color, #1c1c1e));
@@ -1146,8 +1137,7 @@ var q = o`
     user-select: none;
   }
 `;
-//#endregion
-//#region src/view/legend.ts
+// src/view/legend.ts
 function Dt(e) {
 	let t = {
 		...Ne,
@@ -1179,16 +1169,14 @@ function Dt(e) {
     </div>
   `;
 }
-//#endregion
-//#region \0@oxc-project+runtime@0.153.0/helpers/esm/decorate.js
+// \0@oxc-project+runtime@0.155.0/helpers/esm/decorate.js
 function J(e, t, n, r) {
 	var i = arguments.length, a = i < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, n) : r, o;
 	if (typeof Reflect == "object" && typeof Reflect.decorate == "function") a = Reflect.decorate(e, t, n, r);
 	else for (var s = e.length - 1; s >= 0; s--) (o = e[s]) && (a = (i < 3 ? o(a) : i > 3 ? o(t, n, a) : o(t, n)) || a);
 	return i > 3 && a && Object.defineProperty(t, n, a), a;
 }
-//#endregion
-//#region src/view/browse-panel.ts
+// src/view/browse-panel.ts
 var Ot, Y = class extends I {
 	constructor(...e) {
 		super(...e), this.entity = "", this.stack = [], this.loading = !1, this.error = null;
@@ -1375,8 +1363,7 @@ Ot = Y, Ot.styles = [q, o`
         color: var(--mfc-error);
       }
     `], J([L({ attribute: !1 })], Y.prototype, "hass", void 0), J([L()], Y.prototype, "entity", void 0), J([R()], Y.prototype, "stack", void 0), J([R()], Y.prototype, "loading", void 0), J([R()], Y.prototype, "error", void 0), customElements.define("mfc-browse", Y);
-//#endregion
-//#region src/view/links-overlay.ts
+// src/view/links-overlay.ts
 function kt(e, t) {
 	let n = {
 		...Ne,
@@ -1407,8 +1394,7 @@ function At(e, t, n) {
     </g>
   `;
 }
-//#endregion
-//#region src/view/node-card.ts
+// src/view/node-card.ts
 var jt, X = class extends I {
 	constructor(...e) {
 		super(...e), this.dimmed = !1, this.selected = !1;
@@ -1564,8 +1550,7 @@ jt = X, jt.styles = [q, o`
         }
       }
     `], J([L({ attribute: !1 })], X.prototype, "node", void 0), J([L({ type: Boolean })], X.prototype, "dimmed", void 0), J([L({ type: Boolean })], X.prototype, "selected", void 0), customElements.define("mfc-node", X);
-//#endregion
-//#region src/view/output-row.ts
+// src/view/output-row.ts
 var Mt, Z = class extends I {
 	constructor(...e) {
 		super(...e), this.dimmed = !1, this.selected = !1;
@@ -1715,8 +1700,7 @@ Mt = Z, Mt.styles = [q, o`
         color: var(--mfc-warn);
       }
     `], J([L({ attribute: !1 })], Z.prototype, "row", void 0), J([L({ type: Boolean })], Z.prototype, "dimmed", void 0), J([L({ type: Boolean })], Z.prototype, "selected", void 0), customElements.define("mfc-output", Z);
-//#endregion
-//#region src/view/graph-view.ts
+// src/view/graph-view.ts
 var Nt, Q = class extends I {
 	constructor(...e) {
 		super(...e), this.closure = null, this.selection = null, this.anchors = null, this.measureQueued = !1;
@@ -1897,8 +1881,7 @@ Nt = Q, Nt.styles = [
       }
     `
 ], J([L({ attribute: !1 })], Q.prototype, "model", void 0), J([L({ attribute: !1 })], Q.prototype, "closure", void 0), J([L({ attribute: !1 })], Q.prototype, "colors", void 0), J([L({ attribute: !1 })], Q.prototype, "columns", void 0), J([L({ attribute: !1 })], Q.prototype, "selection", void 0), J([R()], Q.prototype, "anchors", void 0), customElements.define("mfc-graph", Q);
-//#endregion
-//#region src/music-flow-card.ts
+// src/music-flow-card.ts
 var Pt, $ = class extends I {
 	constructor(...e) {
 		super(...e), this.selection = null, this.browsing = !1, this.pending = new yt(), this.watched = [], this.debouncedVolume = St((e, t) => {
@@ -2107,5 +2090,4 @@ Pt = $, Pt.styles = [
 	description: "Audio Flow style routing: Music Assistant source, Chromecast stream, Yamaha and Monoprice zones, active outputs with volume.",
 	documentationURL: "https://github.com/trooperthorn/ha_card_music"
 }), console.info("%c MUSIC-FLOW-CARD %c v2026.10.23.2 ", "background: #444; color: #fff; border-radius: 3px 0 0 3px; padding: 2px 0;", "background: #10b981; color: #fff; border-radius: 0 3px 3px 0; padding: 2px 0;");
-//#endregion
 export { $ as MusicFlowCard, z as nodeId };
