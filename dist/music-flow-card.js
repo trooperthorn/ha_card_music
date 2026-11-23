@@ -2089,5 +2089,5 @@ Pt = $, Pt.styles = [
 	name: "Music Flow Card",
 	description: "Audio Flow style routing: Music Assistant source, Chromecast stream, Yamaha and Monoprice zones, active outputs with volume.",
 	documentationURL: "https://github.com/trooperthorn/ha_card_music"
-}), console.info("%c MUSIC-FLOW-CARD %c v2026.10.23.2 ", "background: #444; color: #fff; border-radius: 3px 0 0 3px; padding: 2px 0;", "background: #10b981; color: #fff; border-radius: 0 3px 3px 0; padding: 2px 0;");
+}), console.info("%c MUSIC-FLOW-CARD %c v2026.11.22.1 ", "background: #444; color: #fff; border-radius: 3px 0 0 3px; padding: 2px 0;", "background: #10b981; color: #fff; border-radius: 0 3px 3px 0; padding: 2px 0;");
 export { $ as MusicFlowCard, z as nodeId };
